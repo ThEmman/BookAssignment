@@ -15,6 +15,7 @@ Book.prototype.info = function () {
   }.`;
 };
 
+//? Random comment
 Book.prototype.isRead = function () {
   this.read = this.read ? false : true;
   return this.read;
