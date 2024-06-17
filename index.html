@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="cards"></div>
+
+    <button class="simple-button openDialog">NEW BOOK</button>
+
+    <dialog id="myDialog">
+      <form class="dialogForm">
+        <p>
+          This is a simple dialog using the <code>&lt;dialog&gt;</code> tag.
+        </p>
+        <div>
+          <label for="author"
+            >Enter the authors name:
+            <input type="text" name="Author" id="author" required /></label
+          ><label for="title"
+            >Enter the title:
+            <input type="text" name="Title" id="title" required /></label
+          ><label for="num_of_pages"
+            >Enter the number of pages:
+            <input type="number" name="Page_Numbers" id="num_of_pages" required
+          /></label>
+        </div>
+
+        <button id="closeDialog" formmethod="dialog">Close</button>
+        <button id="submitDialog" value="default">Submit</button>
+      </form>
+    </dialog>
+
+    <!-- Script for Storage and Stuff -->
+    <script src="ConstructorFunc.js"></script>
+
+    <!-- Dialog and Form Functionality -->
+    <script>
+      const dialog = document.getElementById("myDialog");
+      const dialogForm = document.querySelector(".dialogForm");
+      const openDialogButton = document.querySelector(".openDialog");
+      const closeDialogButton = document.getElementById("closeDialog");
+      const submitDialogButton = document.getElementById("submitDialog");
+
+      openDialogButton.addEventListener("click", () => {
+        dialog.showModal();
+      });
+
+      closeDialogButton.addEventListener("click", () => {
+        event.preventDefault();
+        dialog.close("cancel");
+      });
+
+      dialog.addEventListener("close", () => {
+        if (dialog.returnValue != "submit") {
+          dialogForm.reset();
+        }
+
+        displayLibrary();
+      });
+
+      submitDialogButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        const formData = new FormData(dialogForm);
+        const data = Object.fromEntries(formData.entries());
+
+        // Function for Data validation and storage
+        const newBook = new Book(
+          data.Title,
+          data.Author,
+          Number(data.Page_Numbers)
+        );
+        myLibrary.push(newBook);
+        console.log(myLibrary);
+
+        // Close Dialog box after validation and successful storage of data
+        dialog.close("submit");
+
+        //Successfully - dialog.close("submit"); | Unsuccessful - dialog.close('error')
+      });
+    </script>
+  </body>
+</html>
